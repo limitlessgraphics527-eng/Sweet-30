@@ -1,0 +1,343 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>I Love You</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(212,175,55,0.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #020817,
+            #071b3d,
+            #000814
+        );
+
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.password-box,
+.content-box {
+    background: rgba(3,12,30,0.96);
+    border: 2px solid #d4af37;
+    border-radius: 25px;
+    padding: 28px;
+    max-width: 430px;
+    width: 100%;
+    text-align: center;
+
+    box-shadow:
+        0 0 25px rgba(212,175,55,0.2),
+        0 0 60px rgba(30,100,220,0.15);
+}
+
+.content-box {
+    display: none;
+}
+
+h1 {
+    color: #f3d36a;
+    margin-bottom: 15px;
+    font-size: 32px;
+
+    text-shadow:
+        0 0 15px rgba(212,175,55,0.4);
+}
+
+.password-photo {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 2px solid #d4af37;
+    margin: 12px 0 18px;
+}
+
+input {
+    width: 90%;
+    padding: 13px;
+    border-radius: 12px;
+    border: 1px solid #d4af37;
+    background: #020817;
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    outline: none;
+}
+
+input:focus {
+    box-shadow: 0 0 12px #d4af37;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 26px;
+    border: 1px solid #f3d36a;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #f7df8a,
+        #c69b24
+    );
+
+    color: #06142d;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.04);
+
+    box-shadow:
+        0 0 15px rgba(212,175,55,0.4);
+}
+
+video {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    border: 2px solid #d4af37;
+    margin-top: 15px;
+    background: #000;
+}
+
+.error {
+    color: #ff7777;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.float {
+    position: fixed;
+    bottom: -40px;
+    font-size: 22px;
+    pointer-events: none;
+    z-index: 0;
+
+    animation: floatUp linear forwards;
+    opacity: 0.8;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-115vh) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .password-box,
+    .content-box {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- FLOATING BLUE AND GOLD SPARKLES -->
+
+<script>
+function createFloat() {
+
+    const item = document.createElement("div");
+
+    const icons = [
+        "✨",
+        "💙",
+        "⭐",
+        "💛"
+    ];
+
+    item.className = "float";
+
+    item.textContent =
+        icons[Math.floor(Math.random() * icons.length)];
+
+    item.style.left = Math.random() * 100 + "vw";
+
+    item.style.animationDuration =
+        (6 + Math.random() * 6) + "s";
+
+    document.body.appendChild(item);
+
+    setTimeout(() => {
+        item.remove();
+    }, 12000);
+}
+
+setInterval(createFloat, 900);
+</script>
+
+
+<div class="container">
+
+    <!-- PASSWORD SCREEN -->
+
+    <div class="password-box" id="passwordBox">
+
+        <h1>I Love You 💙</h1>
+
+        <img
+            src="photo.jpg"
+            class="password-photo"
+            alt="Photo"
+        >
+
+        <input
+            type="password"
+            id="passwordInput"
+            placeholder="Enter Password"
+            autocomplete="off"
+        >
+
+        <br>
+
+        <button onclick="unlock()">
+            Unlock 💙
+        </button>
+
+        <p
+            class="error"
+            id="error"
+        ></p>
+
+    </div>
+
+
+    <!-- UNLOCKED VIDEO SCREEN -->
+
+    <div class="content-box" id="contentBox">
+
+        <h1>I Love You</h1>
+
+        <video
+            id="surpriseVideo"
+            controls
+            playsinline
+            preload="auto"
+        >
+            <source
+                src="video.mp4"
+                type="video/mp4"
+            >
+
+            Your browser does not support this video.
+        </video>
+
+    </div>
+
+</div>
+
+
+<script>
+
+// PASSWORD
+const correctPassword = "Sweet 30";
+
+
+// UNLOCK THE SURPRISE
+function unlock() {
+
+    const input = document
+        .getElementById("passwordInput")
+        .value
+        .trim();
+
+    const error = document
+        .getElementById("error");
+
+    const passwordBox = document
+        .getElementById("passwordBox");
+
+    const contentBox = document
+        .getElementById("contentBox");
+
+    const video = document
+        .getElementById("surpriseVideo");
+
+
+    if (input === correctPassword) {
+
+        passwordBox.style.display = "none";
+
+        contentBox.style.display = "block";
+
+        video.currentTime = 0;
+
+        video.play().catch(() => {
+
+            // If automatic playback is blocked,
+            // press the play button on the video.
+
+        });
+
+    } else {
+
+        error.textContent =
+            "Incorrect password. Try again.";
+
+    }
+}
+
+
+// PRESS ENTER TO UNLOCK
+document
+    .getElementById("passwordInput")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+            unlock();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
+```
